@@ -15,19 +15,19 @@ $ open https://git-scm.com
 - [x] 5. Составить отчет и отправить ссылку личным сообщением в **Slack**
 
 ## Tutorial
-
+Установка переменных
 ```ShellSession
 $ export GITHUB_USERNAME=Mihailus2000         # Создание переменной окружения для имени пользователя
 $ export GITHUB_EMAIL=Mihail14112000@mail.ru            # Создание переменной окружения для адреса почтового ящика
 $ export GITHUB_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx       # Создание переменной окружения для сгенерированного токена
 $ alias edit=nano              # Создание альтернативной команды вызова редактора nano
 ```
-
+Подготовка рабочего места
 ```ShellSession
 $ cd ${GITHUB_USERNAME}/workspace     # Переход в каталог Mihailus2000/workspace
 $ source scripts/activate             # Выполняем скрипт подготовки
 ```
-
+Конфигурация hub
 ```ShellSession
 $ mkdir ~/.config                     # Создание каталога с конфигами
   
@@ -41,7 +41,7 @@ github.com:
 EOF
 $ git config --global hub.protocol https    # Настройка Git пользователя: установка протокола https
 ```
-
+Работа с git
 ```ShellSession
 $ mkdir projects/lab02 && cd projects/lab02   # Создание каталога lab02 и переход в него
 $ git init                                    # Создание пустого репозитория 
@@ -113,7 +113,7 @@ To https://github.com/Mihailus2000/lab02.git
 *.swp
 .idea/
 ```
-
+Перенос изменений с github
 ```ShellSession
 $ git pull origin master                          # Перенос изменений с удалённого репозитория на github
 
