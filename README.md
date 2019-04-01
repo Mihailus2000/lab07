@@ -12,7 +12,7 @@ $ open https://git-scm.com
 - [x] 2. Сгенирировать токен для доступа к сервису **GitHub** с правами **repo**
 - [x] 3. Ознакомиться со ссылками учебного материала
 - [x] 4. Выполнить инструкцию учебного материала
-- [ ] 5. Составить отчет и отправить ссылку личным сообщением в **Slack**
+- [x] 5. Составить отчет и отправить ссылку личным сообщением в **Slack**
 
 ## Tutorial
 
@@ -71,8 +71,8 @@ remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
  * branch            master     -> FETCH_HEAD
  * [новая ветка]     master     -> origin/master
  
-$ touch README.md                                       # Создание README.md
-$ git status                                            # Просмотр статуса репозитория
+$ touch README.md                         # Создание README.md
+$ git status                              # Просмотр статуса репозитория
 
 На ветке master
 Неотслеживаемые файлы:
@@ -115,7 +115,7 @@ To https://github.com/Mihailus2000/lab02.git
 ```
 
 ```ShellSession
-$ git pull origin master                                      # Перенос изменений с удалённого репозитория на github
+$ git pull origin master                          # Перенос изменений с удалённого репозитория на github
 
 remote: Enumerating objects: 4, done.
 remote: Counting objects: 100% (4/4), done.
@@ -131,7 +131,7 @@ Fast-forward
  1 file changed, 4 insertions(+)
  create mode 100644 .gitignore
  
-$ git log                                                                           # Просмотр всех коммитов
+$ git log                                        # Просмотр всех коммитов
 
 commit a721d656ab6bfccbc6534381461b78b97ab0c730 (HEAD -> master, origin/master)
 Author: Mihailus2000 <43482415+Mihailus2000@users.noreply.github.com>
