@@ -24,12 +24,12 @@ $ alias edit=nano              # Создание альтернативной �
 ```
 
 ```ShellSession
-$ cd ${GITHUB_USERNAME}/workspace     # Переход в дериктории Mihailus2000/workspace
+$ cd ${GITHUB_USERNAME}/workspace     # Переход в каталог Mihailus2000/workspace
 $ source scripts/activate             # Выполняем скрипт подготовки
 ```
 
 ```ShellSession
-$ mkdir ~/.config                     # Создание дериктории с конфигами
+$ mkdir ~/.config                     # Создание каталога с конфигами
   
 mkdir: невозможно создать каталог «/home/mihail/.config»: Файл существует
 
@@ -43,7 +43,7 @@ $ git config --global hub.protocol https    # Настройка Git польз�
 ```
 
 ```ShellSession
-$ mkdir projects/lab02 && cd projects/lab02   # Создание дериктории lab02 и переход в неё
+$ mkdir projects/lab02 && cd projects/lab02   # Создание каталога lab02 и переход в него
 $ git init                                    # Создание пустого репозитория 
 
 Инициализирован пустой репозиторий Git в /home/mihail/Mihailus2000/workspace/projects/lab02/.git/
@@ -154,9 +154,9 @@ Date:   Mon Apr 1 21:49:52 2019 +0300
 ```
 Создание дериктории, запись кода в файл
 ```ShellSession
-$ mkdir sources                                         # Создание дериктории sources
-$ mkdir include                                         # Создание дериктории include
-$ mkdir examples                                        # Создание дериктории examples
+$ mkdir sources                                         # Создание каталога sources
+$ mkdir include                                         # Создание каталога include
+$ mkdir examples                                        # Создание каталога examples
 $ cat > sources/print.cpp <<EOF                         # Запись кода в файл
 #include <print.hpp>
 
@@ -225,7 +225,7 @@ $ git status                                             # Просмотр ст
 
 ничего не добавлено в коммит, но есть неотслеживаемые файлы (используйте «git add», чтобы отслеживать их)
 
-$ git add .                                              # Добавление всех файлов из текущей дериктории в список отслеживаемых
+$ git add .                                              # Добавление всех файлов из текущего каталога в список отслеживаемых
 $ git commit -m"added sources"                           # Фиксирование изменений
 [master 691fd11] added sources
  
@@ -249,18 +249,20 @@ To https://github.com/Mihailus2000/lab02.git
    a721d65..691fd11  master -> master
 
 ```
-
+Отправка отчёта
 ## Report
 
 ```ShellSession
-$ cd ~/workspace/labs/
-$ export LAB_NUMBER=02
-$ git clone https://github.com/tp-labs/lab${LAB_NUMBER}.git tasks/lab${LAB_NUMBER}
-$ mkdir reports/lab${LAB_NUMBER}
-$ cp tasks/lab${LAB_NUMBER}/README.md reports/lab${LAB_NUMBER}/REPORT.md
-$ cd reports/lab${LAB_NUMBER}
-$ edit REPORT.md
-$ gistup -m "lab${LAB_NUMBER}"
+$ cd ~/workspace/labs/                      # Переход в каталог /labs
+$ export LAB_NUMBER=02                      # Создание переменной окружения LAB_NUMBER
+# Клонирование репозитория преподавателя к себе
+$ git clone https://github.com/tp-labs/lab${LAB_NUMBER}.git tasks/lab${LAB_NUMBER}   
+$ mkdir reports/lab${LAB_NUMBER}            # Создание каталога 
+# Копирование файла README.md в reports/lab02
+$ cp tasks/lab${LAB_NUMBER}/README.md reports/lab${LAB_NUMBER}/REPORT.md    
+$ cd reports/lab${LAB_NUMBER}               # Переход в каталог 
+$ edit REPORT.md                            # Редактирование файла
+$ gistup -m "lab${LAB_NUMBER}"              # Отправка отчета в gists
 ```
 
 ## Homework
