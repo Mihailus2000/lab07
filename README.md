@@ -1,320 +1,352 @@
-## Laboratory work II
+## Laboratory work VI
 
-Данная лабораторная работа посвещена изучению систем контроля версий на примере **Git**.
+Данная лабораторная работа посвещена изучению средств пакетирования на примере **CPack**
 
-```bash
-$ open https://git-scm.com
+```ShellSession
+$ open https://cmake.org/Wiki/CMake:CPackPackageGenerators
 ```
 
 ## Tasks
 
-- [x] 1. Создать публичный репозиторий с названием **lab02** и с лиценцией **MIT**
-- [x] 2. Сгенирировать токен для доступа к сервису **GitHub** с правами **repo**
+- [x] 1. Создать публичный репозиторий с названием **lab06** на сервисе **GitHub**
+- [x] 2. Выполнить инструкцию учебного материала
 - [x] 3. Ознакомиться со ссылками учебного материала
-- [x] 4. Выполнить инструкцию учебного материала
-- [x] 5. Составить отчет и отправить ссылку личным сообщением в **Slack**
+- [x] 4. Составить отчет и отправить ссылку личным сообщением в **Slack**
 
 ## Tutorial
-Установка переменных
+
+Подготовка окружения
 ```ShellSession
-$ export GITHUB_USERNAME=Mihailus2000         # Создание переменной окружения для имени пользователя
-$ export GITHUB_EMAIL=Mihail14112000@mail.ru            # Создание переменной окружения для адреса почтового ящика
-$ export GITHUB_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx       # Создание переменной окружения для сгенерированного токена
-$ alias edit=nano              # Создание альтернативной команды вызова редактора nano
+$ export GITHUB_USERNAME=Mihailus2000             # Добавление переменной окружения
+$ export GITHUB_EMAIL=Mihail14112000@mail.ru      # Добавление переменной окружения    
+$ alias edit=nano                                 # Создание синонима команды вызова редактора nano
+$ alias gsed=sed # for *-nix system               Создание синонима команды gsed
 ```
-Подготовка рабочего места
+Подготовка к новой ЛР и запуск скрипта
 ```ShellSession
-$ cd ${GITHUB_USERNAME}/workspace     # Переход в каталог Mihailus2000/workspace
-$ source scripts/activate             # Выполняем скрипт подготовки
+$ cd ${GITHUB_USERNAME}/workspace                 # Переход в указанную директорию
+$ pushd .                                         # Сохранение текущей
+
+~/Mihailus2000/workspace ~/Mihailus2000/workspace
+
+$ source scripts/activate                         # Запус скрипта активации
 ```
-Конфигурация hub
+Скачка файлов прошлой ЛР
 ```ShellSession
-$ mkdir ~/.config                     # Создание каталога с конфигами
-  
-mkdir: невозможно создать каталог «/home/mihail/.config»: Файл существует
+$ git clone https://github.com/${GITHUB_USERNAME}/lab06 projects/lab06     # Клонироание файлов из удалённого репозитория
 
-$ cat > ~/.config/hub <<EOF           # Создание файла hub и запись в него текста
-github.com:
-- user: ${GITHUB_USERNAME}
-  oauth_token: ${GITHUB_TOKEN}
-  protocol: https
-EOF
-$ git config --global hub.protocol https    # Настройка Git пользователя: установка протокола https
+Клонирование в «projects/lab06»…
+remote: Enumerating objects: 40, done.
+remote: Counting objects: 100% (40/40), done.
+remote: Compressing objects: 100% (23/23), done.
+remote: Total 40 (delta 11), reused 40 (delta 11), pack-reused 0
+Распаковка объектов: 100% (40/40), готово.
+
+$ cd projects/lab06                               # Переход в указанную директорию
+$ git remote remove origin                        # Удаление ссылки на старый репозиторий
+$ git remote add origin https://github.com/${GITHUB_USERNAME}/lab06       # Добавление ссылки на новый репозиторий
 ```
-Работа с git
+
+Редактирование CMakeList.txt
 ```ShellSession
-$ mkdir projects/lab02 && cd projects/lab02   # Создание каталога lab02 и переход в него
-$ git init                                    # Создание пустого репозитория 
+$ gsed -i '/project(print)/a\                             # Запись в конец файла указанных строк
+set(PRINT_VERSION_STRING "v\${PRINT_VERSION}")
+' CMakeLists.txt
+$ gsed -i '/project(print)/a\                             # Запись в конец файла указанных строк
+set(PRINT_VERSION\
+  \${PRINT_VERSION_MAJOR}.\${PRINT_VERSION_MINOR}.\${PRINT_VERSION_PATCH}.\${PRINT_VERSION_TWEAK})
+' CMakeLists.txt
+$ gsed -i '/project(print)/a\                             # Запись в конец файла указанных строк
+set(PRINT_VERSION_TWEAK 0)
+' CMakeLists.txt
+$ gsed -i '/project(print)/a\                             # Запись в конец файла указанных строк
+set(PRINT_VERSION_PATCH 0)
+' CMakeLists.txt
+$ gsed -i '/project(print)/a\                             # Запись в конец файла указанных строк
+set(PRINT_VERSION_MINOR 1)
+' CMakeLists.txt
+$ gsed -i '/project(print)/a\                             # Запись в конец файла указанных строк
+set(PRINT_VERSION_MAJOR 0)
+' CMakeLists.txt
+$ git diff                                                # Выводит отличия между коммитами
 
-Инициализирован пустой репозиторий Git в /home/mihail/Mihailus2000/workspace/projects/lab02/.git/
-
-$ git config --global user.name ${GITHUB_USERNAME}      # Первоначальная настройка для сессии: установка имени пользователя
-$ git config --global user.email ${GITHUB_EMAIL}        # Установка адреса электронной почты
-# check your git global settings
-$ git config -e --global                                # Вывод на экран настроек Git
-
-[user]
-        email = Mihail14112000@mail.ru
-        name = Mihailus2000
-[hub]
-        protocol = https
-        
-$ git remote add origin https://github.com/${GITHUB_USERNAME}/lab02.git   # Добавление ссылки origin на репозиторий на github
-$ git pull origin master                                # Перенос изменений с github
-
-remote: Enumerating objects: 3, done.
-remote: Counting objects: 100% (3/3), done.
-remote: Compressing objects: 100% (2/2), done.
-remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
-Распаковка объектов: 100% (3/3), готово.
-Из https://github.com/Mihailus2000/lab02
- * branch            master     -> FETCH_HEAD
- * [новая ветка]     master     -> origin/master
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 05cc72b..e62bf3f 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -6,6 +6,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
+ option(BUILD_EXAMPLES "Build examples" OFF)
  
-$ touch README.md                         # Создание README.md
-$ git status                              # Просмотр статуса репозитория
-
-На ветке master
-Неотслеживаемые файлы:
-  (используйте «git add <файл>…», чтобы добавить в то, что будет включено в коммит)
-
-        README.md
-
-ничего не добавлено в коммит, но есть неотслеживаемые файлы (используйте «git add», чтобы отслеживать их)
-
-$ git add README.md                             # Добавление README.md в список отслеживаемых файлов
-$ git commit -m"added README.md"                # Фиксирование изменений
-
-[master f3763e3] added README.md
- 1 file changed, 0 insertions(+), 0 deletions(-)
- create mode 100644 README.md
-
-$ git push origin master                      # Отправка изменений на удалённый репозиторий 
-
-Username for 'https://github.com': Mihailus2000
-Password for 'https://Mihailus2000@github.com': 
-Перечисление объектов: 4, готово.
-Подсчет объектов: 100% (4/4), готово.
-При сжатии изменений используется до 2 потоков
-Сжатие объектов: 100% (2/2), готово.
-Запись объектов: 100% (3/3), 280 bytes | 93.00 KiB/s, готово.
-Всего 3 (изменения 0), повторно использовано 0 (изменения 0)
-To https://github.com/Mihailus2000/lab02.git
-   0697494..f3763e3  master -> master
-   
-```
-
-Добавить на сервисе **GitHub** в репозитории **lab02** файл **.gitignore**
-со следующем содержимом:
-
-```ShellSession
-*build*/
-*install*/
-*.swp
-.idea/
-```
-Перенос изменений с github
-```ShellSession
-$ git pull origin master                          # Перенос изменений с удалённого репозитория на github
-
-remote: Enumerating objects: 4, done.
-remote: Counting objects: 100% (4/4), done.
-remote: Compressing objects: 100% (2/2), done.
-remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
-Распаковка объектов: 100% (3/3), готово.
-Из https://github.com/Mihailus2000/lab02
- * branch            master     -> FETCH_HEAD
-   f3763e3..a721d65  master     -> origin/master
-Обновление f3763e3..a721d65
-Fast-forward
- .gitignore | 4 ++++
- 1 file changed, 4 insertions(+)
- create mode 100644 .gitignore
+ project(print)
++set(PRINT_VERSION_MAJOR 0)
++set(PRINT_VERSION_MINOR 1)
++set(PRINT_VERSION_PATCH 0)
++set(PRINT_VERSION_TWEAK 0)
++set(PRINT_VERSION
++  ${PRINT_VERSION_MAJOR}.${PRINT_VERSION_MINOR}.${PRINT_VERSION_PATCH}.${PRINT_VERSION_TWEAK})
++set(PRINT_VERSION_STRING "v${PRINT_VERSION}")
  
-$ git log                                        # Просмотр всех коммитов
-
-commit a721d656ab6bfccbc6534381461b78b97ab0c730 (HEAD -> master, origin/master)
-Author: Mihailus2000 <43482415+Mihailus2000@users.noreply.github.com>
-Date:   Mon Apr 1 22:37:33 2019 +0300
-
-    Create .gitignore
-
-commit f3763e3350658342796b0303432423dc2136da53
-Author: Mihailus2000 <Mihail14112000@mail.ru>
-Date:   Mon Apr 1 22:34:02 2019 +0300
-
-    added README.md
-
-commit 0697494e977f98efb6b5d306159898e6a17d3f39
-Author: Mihailus2000 <43482415+Mihailus2000@users.noreply.github.com>
-Date:   Mon Apr 1 21:49:52 2019 +0300
-
-    Initial commit
-    
-```
-Создание дериктории, запись кода в файл
-```ShellSession
-$ mkdir sources                                         # Создание каталога sources
-$ mkdir include                                         # Создание каталога include
-$ mkdir examples                                        # Создание каталога examples
-$ cat > sources/print.cpp <<EOF                         # Запись кода в файл
-#include <print.hpp>
-
-void print(const std::string& text, std::ostream& out)
-{
-  out << text;
-}
-
-void print(const std::string& text, std::ofstream& out)
-{
-  out << text;
-}
-EOF
-```
-Создание файла с кодом 
-```ShellSession
-$ cat > include/print.hpp <<EOF                         # Запись кода в файл
-#include <fstream>
-#include <iostream>
-#include <string>
-
-void print(const std::string& text, std::ofstream& out);
-void print(const std::string& text, std::ostream& out = std::cout);
-EOF
-```
-Создание файла с кодом 
-```ShellSession
-$ cat > examples/example1.cpp <<EOF                     # Запись кода в файл
-#include <print.hpp>
-
-int main(int argc, char** argv)
-{
-  print("hello");
-}
-EOF
-```
-Создание файла с кодом 
-```ShellSession
-$ cat > examples/example2.cpp <<EOF                     # Запись кода в файл
-#include <print.hpp>
-
-#include <fstream>
-
-int main(int argc, char** argv)
-{
-  std::ofstream file("log.txt");
-  print(std::string("hello"), file);
-}
-EOF
-```
-Редактирование README.md
-```ShellSession
-$ edit README.md                                         # Редактирование файла README.md
-```
-
-```ShellSession
-$ git status                                             # Просмотр статуса репозитория 
-
-На ветке master
-Неотслеживаемые файлы:
-  (используйте «git add <файл>…», чтобы добавить в то, что будет включено в коммит)
-
-        examples/
-        include/
-        sources/
-
-ничего не добавлено в коммит, но есть неотслеживаемые файлы (используйте «git add», чтобы отслеживать их)
-
-$ git add .                                              # Добавление всех файлов из текущего каталога в список отслеживаемых
-$ git commit -m"added sources"                           # Фиксирование изменений
-[master 691fd11] added sources
+ add_library(print STATIC ${CMAKE_CURRENT_SOURCE_DIR}/sources/print.cpp)
  
+
+```
+Добавление необходимых файлов для создания RPM пакета
+```ShellSession
+$ touch DESCRIPTION && edit DESCRIPTION                 # Создание и редактрование файла DESCRIPTION
+$ touch ChangeLog.md                                    # Создание файла ChangeLog.md
+$ export DATE="`LANG=en_US date +'%a %b %d %Y'`"        # Создание переменной окружения DATE
+$ cat > ChangeLog.md <<EOF                              # Запись указанных строк в файл 
+* ${DATE} ${GITHUB_USERNAME} <${GITHUB_EMAIL}> 0.1.0.0
+- Initial RPM release
+EOF
+```
+Добавление отдельного cmake файла с конфигом 
+```ShellSession       
+$ cat > CPackConfig.cmake <<EOF                         # Запись текста в файл
+include(InstallRequiredSystemLibraries)
+EOF
+```
+Добавлени пакетов в файл конфигурации
+```ShellSession
+$ cat >> CPackConfig.cmake <<EOF                        # Запись текста в файл     
+set(CPACK_PACKAGE_CONTACT ${GITHUB_EMAIL})
+set(CPACK_PACKAGE_VERSION_MAJOR \${PRINT_VERSION_MAJOR})
+set(CPACK_PACKAGE_VERSION_MINOR \${PRINT_VERSION_MINOR})
+set(CPACK_PACKAGE_VERSION_PATCH \${PRINT_VERSION_PATCH})
+set(CPACK_PACKAGE_VERSION_TWEAK \${PRINT_VERSION_TWEAK})
+set(CPACK_PACKAGE_VERSION \${PRINT_VERSION})
+set(CPACK_PACKAGE_DESCRIPTION_FILE \${CMAKE_CURRENT_SOURCE_DIR}/DESCRIPTION)
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "static c++ library for printing")
+EOF
+```
+
+Дополнение конфигурации с путями к файлам лицензии и README.md
+```ShellSession
+$ cat >> CPackConfig.cmake <<EOF                        # Запись текста в файл    
+
+set(CPACK_RESOURCE_FILE_LICENSE \${CMAKE_CURRENT_SOURCE_DIR}/LICENSE)
+set(CPACK_RESOURCE_FILE_README \${CMAKE_CURRENT_SOURCE_DIR}/README.md)
+EOF
+```
+
+Добавление в конфигурацию информации о RPM пакете
+```ShellSession
+$ cat >> CPackConfig.cmake <<EOF                        # Запись текста в файл    
+
+set(CPACK_RPM_PACKAGE_NAME "print-devel")
+set(CPACK_RPM_PACKAGE_LICENSE "MIT")
+set(CPACK_RPM_PACKAGE_GROUP "print")
+set(CPACK_RPM_CHANGELOG_FILE \${CMAKE_CURRENT_SOURCE_DIR}/ChangeLog.md)
+set(CPACK_RPM_PACKAGE_RELEASE 1)
+EOF
+```
+Добавление информации о DEB
+```ShellSession
+$ cat >> CPackConfig.cmake <<EOF                       # Запись текста в файл      
+
+set(CPACK_DEBIAN_PACKAGE_NAME "libprint-dev")
+set(CPACK_DEBIAN_PACKAGE_PREDEPENDS "cmake >= 3.0")
+set(CPACK_DEBIAN_PACKAGE_RELEASE 1)
+EOF
+```
+Подключение CPack в CMake конфиге
+```ShellSession
+$ cat >> CPackConfig.cmake <<EOF                       # Запись текста в файл    
+
+include(CPack)
+EOF
+```
+Подключение в собранной конфигурации в CMakeLists.txt 
+```ShellSession
+$ cat >> CMakeLists.txt <<EOF                           # Запись текста в файл    
+
+include(CPackConfig.cmake)
+EOF
+```
+Изменение README.md
+```ShellSession
+$ gsed -i 's/lab06/lab06/g' README.md                   # Замена lab06 на lab06
+```
+
+Фиксация и отправка изменений на репозиторий
+```ShellSession
+$ git add .                                             # Фиксация всех изменений
+$ git commit -m"added cpack config"                     # Коммит зафиксированных изменений
+
+master 6287a2b] added cpack config
  4 files changed, 32 insertions(+)
- create mode 100644 examples/example1.cpp
- create mode 100644 examples/example2.cpp
- create mode 100644 include/print.hpp
- create mode 100644 sources/print.cpp
+ create mode 100644 CPackConfig.cmake
+ create mode 100644 ChangeLog.md
+ create mode 100644 DESCRIPTION
 
-$ git push origin master                                 # Отправка изменений на удалённый репозиторий
+$ git tag v0.1.0.0                                      # Установка тэга
+$ git push origin master --tags                         # Отправка изменений с определённым тегом
 
-Username for 'https://github.com': Mihailus2000
-Password for 'https://Mihailus2000@github.com': 
-Перечисление объектов: 10, готово.
-Подсчет объектов: 100% (10/10), готово.
-При сжатии изменений используется до 2 потоков
-Сжатие объектов: 100% (7/7), готово.
-Запись объектов: 100% (9/9), 965 bytes | 107.00 KiB/s, готово.
-Всего 9 (изменения 0), повторно использовано 0 (изменения 0)
-To https://github.com/Mihailus2000/lab02.git
-   a721d65..691fd11  master -> master
+Перечисление объектов: 8, готово.
+Подсчет объектов: 100% (8/8), готово.
+При сжатии изменений используется до 4 потоков
+Сжатие объектов: 100% (5/5), готово.
+Запись объектов: 100% (6/6), 995 bytes | 995.00 KiB/s, готово.
+Всего 6 (изменения 2), повторно использовано 0 (изменения 0)
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To https://github.com/Mihailus2000/lab06
+   86b62aa..6287a2b  master -> master
+ * [new tag]         v0.1.0.0 -> v0.1.0.0
 
 ```
-Отправка отчёта
+
+Авторизация и активация репозитория в Travis CI
+```ShellSession
+$ travis login --auto         # Авторизация
+
+Successfully logged in as Mihailus2000!
+
+$ travis enable               # Активация
+
+Detected repository as Mihailus2000/lab06, is this correct? |yes| yes
+Mihailus2000/lab06: enabled :)
+
+```
+Сборка и компиляция через CMake. Создание пакета через CPack
+```ShellSession
+$ cmake -H. -B_build      # Сборка. В директорию B_build
+
+-- The C compiler identification is GNU 8.2.0
+-- The CXX compiler identification is GNU 8.2.0
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/mihailus/Mihailus2000/workspace/projects/lab06/_build
+
+$ cmake --build _build      # Компиляция в директории _build
+
+[ 50%] Building CXX object CMakeFiles/print.dir/sources/print.cpp.o
+[100%] Linking CXX static library libprint.a
+[100%] Built target print
+
+$ cd _build                 # Переход в указанную директорию
+$ cpack -G "TGZ"            # Упаковка файлов с использованием формата "TGZ"
+
+CPack: Create package using TGZ
+CPack: Install projects
+CPack: - Run preinstall target for: print
+CPack: - Install project: print
+CPack: Create package
+CPack: - package: /home/mihailus/Mihailus2000/workspace/projects/lab06/_build/print-0.1.0.0-Linux.tar.gz generated.
+
+$ cd ..                     # Переход на уровень выше
+```
+
+Сборка и создание пакета через CMake
+```ShellSession
+$ cmake -H. -B_build -DCPACK_GENERATOR="TGZ"      # Сборка
+
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/mihailus/Mihailus2000/workspace/projects/lab06/_build
+
+$ cmake --build _build --target package           # Компиляция цели package
+
+[100%] Built target print
+Run CPack packaging tool...
+CPack: Create package using TGZ
+CPack: Install projects
+CPack: - Run preinstall target for: print
+CPack: - Install project: print
+CPack: Create package
+CPack: - package: /home/mihailus/Mihailus2000/workspace/projects/lab06/_build/print-0.1.0.0-Linux.tar.gz generated.
+
+```
+Перемещение собранного пакета и отображение в виде дерева
+```ShellSession
+$ mkdir artifacts                                 # Создание директории
+$ mv _build/*.tar.gz artifacts                    # Перемещение проекта
+$ tree artifacts                                  # Отображение дерева указанной папки
+
+artifacts
+└── print-0.1.0.0-Linux.tar.gz
+
+0 directories, 1 file
+
+```
+
 ## Report
 
 ```ShellSession
-$ cd ~/workspace/labs/                      # Переход в каталог /labs
-$ export LAB_NUMBER=02                      # Создание переменной окружения LAB_NUMBER
-# Клонирование репозитория преподавателя к себе
-$ git clone https://github.com/tp-labs/lab${LAB_NUMBER}.git tasks/lab${LAB_NUMBER}   
-$ mkdir reports/lab${LAB_NUMBER}            # Создание каталога 
-# Копирование файла README.md в reports/lab02
-$ cp tasks/lab${LAB_NUMBER}/README.md reports/lab${LAB_NUMBER}/REPORT.md    
-$ cd reports/lab${LAB_NUMBER}               # Переход в каталог 
-$ edit REPORT.md                            # Редактирование файла
-$ gistup -m "lab${LAB_NUMBER}"              # Отправка отчета в gists
+$ popd
+$ export LAB_NUMBER=06
+$ git clone https://github.com/tp-labs/lab${LAB_NUMBER} tasks/lab${LAB_NUMBER}
+$ mkdir reports/lab${LAB_NUMBER}
+$ cp tasks/lab${LAB_NUMBER}/README.md reports/lab${LAB_NUMBER}/REPORT.md
+$ cd reports/lab${LAB_NUMBER}
+$ edit REPORT.md
+$ gistup -m "lab${LAB_NUMBER}"
 ```
 
 ## Homework
 
-### Part I
+После того, как вы настроили взаимодействие с системой непрерывной интеграции,</br>
+обеспечив автоматическую сборку и тестирование ваших изменений, стоит задуматься</br>
+о создание пакетов для измениний, которые помечаются тэгами (см. вкладку [releases](https://github.com/tp-labs/lab06/releases)).</br>
+Пакет должен содержать приложение _solver_ из [предыдущего задания](https://github.com/tp-labs/lab03#задание-1)
+Таким образом, каждый новый релиз будет состоять из следующих компонентов:
+- архивы с файлами исходного кода (`.tar.gz`, `.zip`)
+- пакеты с бинарным файлом _solver_ (`.deb`, `.rpm`, `.msi`, `.dmg`)
 
-1. Создайте пустой репозиторий на сервисе github.com (или gitlab.com, или bitbucket.com).
-2. Выполните инструкцию по созданию первого коммита на странице репозитория, созданного на предыдещем шаге.
-3. Создайте файл `hello_world.cpp` в локальной копии репозитория (который должен был появиться на шаге 2). Реализуйте программу **Hello world** на языке C++ используя плохой стиль кода. Например, после заголовочных файлов вставьте строку `using namespace std;`.
-4. Добавьте этот файл в локальную копию репозитория.
-5. Закоммитьте изменения с *осмысленным* сообщением.
-6. Изменитьте исходный код так, чтобы программа через стандартный поток ввода запрашивалось имя пользователя. А в стандартный поток вывода печаталось сообщение `Hello world from @name`, где `@name` имя пользователя.
-7. Закоммитьте новую версию программы. Почему не надо добавлять файл повторно `git add`?
-8. Запуште изменения в удалёный репозиторий.
-9. Проверьте, что история коммитов доступна в удалёный репозитории.
+В качестве подсказки:
+```bash
+$ cat .travis.yml
+os: osx
+script:
+...
+- cpack -G DragNDrop # dmg
 
-### Part II
+$ cat .travis.yml
+os: linux
+script:
+...
+- cpack -G DEB # deb
 
-**Note:** *Работать продолжайте с теми же репоззиториями, что и в первой части задания.*
-1. В локальной копии репозитория создайте локальную ветку `patch1`.
-2. Внесите изменения в ветке `patch1` по исправлению кода и избавления от `using namespace std;`.
-3. **commit**, **push** локальную ветку в удалённый репозиторий.
-4. Проверьте, что ветка `patch1` доступна в удалёный репозитории.
-5. Создайте pull-request `patch1 -> master`.
-6. В локальной копии в ветке `patch1` добавьте в исходный код комментарии.
-7. **commit**, **push**.
-8. Проверьте, что новые изменения есть в созданном на **шаге 5** pull-request
-9. В удалённый репозитории выполните  слияние PR `patch1 -> master` и удалите ветку `patch1` в удаленном репозитории.
-10. Локально выполните **pull**.
-11. С помощью команды **git log** просмотрите историю в локальной версии ветки `master`.
-12. Удалите локальную ветку `patch1`.
+$ cat .travis.yml
+os: linux
+addons:
+  apt:
+    packages:
+    - rpm
+script:
+...
+- cpack -G RPM # rpm
 
-### Part III
+$ cat appveyor.yml
+platform:
+- x86
+- x64
+build_script:
+...
+- cpack -G WIX # msi
+```
 
-**Note:** *Работать продолжайте с теми же репоззиториями, что и в первой части задания.*
-1. Создайте новую локальную ветку `patch2`.
-2. Измените *code style* с помощью утилиты [**clang-format**](http://clang.llvm.org/docs/ClangFormat.html). Например, используя опцию `-style=Mozilla`.
-3. **commit**, **push**, создайте pull-request `patch2 -> master`.
-4. В ветке **master** в удаленном репозитории измените комментарии, например, расставьте знаки препинания, переведите комментарии на другой язык.
-5. Убедитесь, что в pull-request появились *конфликтны*.
-6. Для этого локально выполните **pull** + **rebase** (точную последовательность команд, следует узнать самостоятельно). **Исправьте конфликты**.
-7. Сделайте *force push* в ветку `patch2`
-8. Убедитель, что в pull-request пропали конфликтны. 
-9. Вмержите pull-request `patch2 -> master`.
+Для этого нужно добавить ветвление в конфигурационные файлы для **CI** со следующей логикой:</br>
+если **commit** помечен тэгом, то необходимо собрать пакеты (`DEB, RPM, WIX, DragNDrop, ...`) </br>
+и разместить их на сервисе **GitHub**. (см. пример для [Travi CI](https://docs.travis-ci.com/user/deployment/releases))</br>
 
 ## Links
 
-- [hub](https://hub.github.com/)
-- [GitHub](https://github.com)
-- [Bitbucket](https://bitbucket.org)
-- [Gitlab](https://about.gitlab.com)
-- [LearnGitBranching](http://learngitbranching.js.org/)
+- [DMG](https://cmake.org/cmake/help/latest/module/CPackDMG.html)
+- [DEB](https://cmake.org/cmake/help/latest/module/CPackDeb.html)
+- [RPM](https://cmake.org/cmake/help/latest/module/CPackRPM.html)
+- [NSIS](https://cmake.org/cmake/help/latest/module/CPackNSIS.html)
 
 ```
 Copyright (c) 2015-2019 The ISC Authors
