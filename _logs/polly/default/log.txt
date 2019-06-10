@@ -1,0 +1,71 @@
+Execute command: [
+  `which`
+  `cmake`
+]
+[/home/mihailus/Mihailus2000/workspace/projects/lab07]> "which" "cmake"
+/usr/bin/cmake
+Execute command: [
+  `cmake`
+  `--version`
+]
+[/home/mihailus/Mihailus2000/workspace/projects/lab07]> "cmake" "--version"
+cmake version 3.13.4
+
+CMake suite maintained and supported by Kitware (kitware.com/cmake).
+Execute command: [
+  `cmake`
+  `-H.`
+  `-B/home/mihailus/Mihailus2000/workspace/projects/lab07/_builds/default`
+  `-DCMAKE_TOOLCHAIN_FILE=/home/mihailus/Mihailus2000/workspace/projects/lab07/tools/polly/default.cmake`
+  `-DBUILD_TESTS=ON`
+]
+[/home/mihailus/Mihailus2000/workspace/projects/lab07]> "cmake" "-H." "-B/home/mihailus/Mihailus2000/workspace/projects/lab07/_builds/default" "-DCMAKE_TOOLCHAIN_FILE=/home/mihailus/Mihailus2000/workspace/projects/lab07/tools/polly/default.cmake" "-DBUILD_TESTS=ON"
+-- [polly] Used toolchain: Default
+-- The C compiler identification is GNU 8.3.0
+-- The CXX compiler identification is GNU 8.3.0
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- [hunter] Calculating Toolchain-SHA1
+-- [hunter] Calculating Config-SHA1
+-- [hunter] HUNTER_ROOT: /home/mihailus/projects/hunter
+-- [hunter] [ Hunter-ID: 12dec07 | Toolchain-ID: bb25d6f | Config-ID: b37bb55 ]
+-- [hunter] GTEST_ROOT: /home/mihailus/projects/hunter/_Base/12dec07/bb25d6f/b37bb55/Install (ver.: 1.8.0-hunter-p11)
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/mihailus/Mihailus2000/workspace/projects/lab07/_builds/default
+Execute command: [
+  `cmake`
+  `--build`
+  `/home/mihailus/Mihailus2000/workspace/projects/lab07/_builds/default`
+  `--`
+]
+[/home/mihailus/Mihailus2000/workspace/projects/lab07]> "cmake" "--build" "/home/mihailus/Mihailus2000/workspace/projects/lab07/_builds/default" "--"
+Scanning dependencies of target print
+[ 25%] Building CXX object CMakeFiles/print.dir/sources/print.cpp.o
+[ 50%] Linking CXX static library libprint.a
+[ 50%] Built target print
+Scanning dependencies of target check
+[ 75%] Building CXX object CMakeFiles/check.dir/tests/test1.cpp.o
+[100%] Linking CXX executable check
+[100%] Built target check
+Execute command: [
+  `ctest`
+]
+[/home/mihailus/Mihailus2000/workspace/projects/lab07/_builds/default]> "ctest"
+Test project /home/mihailus/Mihailus2000/workspace/projects/lab07/_builds/default
+    Start 1: check
+1/1 Test #1: check ............................   Passed    0.00 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.00 sec
